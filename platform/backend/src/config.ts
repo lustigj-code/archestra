@@ -474,6 +474,19 @@ export default {
       enabled: Boolean(process.env.ARCHESTRA_VLLM_BASE_URL),
       baseUrl: process.env.ARCHESTRA_VLLM_BASE_URL,
     },
+    openrouter: {
+      enabled: true,
+      baseUrl:
+        process.env.ARCHESTRA_OPENROUTER_BASE_URL ||
+        "https://openrouter.ai/api/v1",
+      /**
+       * Optional but recommended by OpenRouter for attribution.
+       * See: https://openrouter.ai/docs/quickstart
+       */
+      httpReferer: process.env.ARCHESTRA_OPENROUTER_HTTP_REFERER || "",
+      xTitle:
+        process.env.ARCHESTRA_OPENROUTER_X_TITLE || "Archestra Platform",
+    },
     ollama: {
       enabled: Boolean(
         process.env.ARCHESTRA_OLLAMA_BASE_URL ?? "http://localhost:11434/v1",
@@ -485,6 +498,11 @@ export default {
       baseUrl:
         process.env.ARCHESTRA_ZHIPUAI_BASE_URL ||
         "https://api.z.ai/api/paas/v4",
+    },
+    deepseek: {
+      baseUrl:
+        process.env.ARCHESTRA_DEEPSEEK_BASE_URL ||
+        "https://api.deepseek.com",
     },
     bedrock: {
       enabled: Boolean(process.env.ARCHESTRA_BEDROCK_BASE_URL),
@@ -513,6 +531,9 @@ export default {
     vllm: {
       apiKey: process.env.ARCHESTRA_CHAT_VLLM_API_KEY || "",
     },
+    openrouter: {
+      apiKey: process.env.ARCHESTRA_CHAT_OPENROUTER_API_KEY || "",
+    },
     ollama: {
       apiKey: process.env.ARCHESTRA_CHAT_OLLAMA_API_KEY || "",
     },
@@ -524,6 +545,9 @@ export default {
     },
     bedrock: {
       apiKey: process.env.ARCHESTRA_CHAT_BEDROCK_API_KEY || "",
+    },
+    deepseek: {
+      apiKey: process.env.ARCHESTRA_CHAT_DEEPSEEK_API_KEY || "",
     },
     defaultModel:
       process.env.ARCHESTRA_CHAT_DEFAULT_MODEL || "claude-opus-4-1-20250805",

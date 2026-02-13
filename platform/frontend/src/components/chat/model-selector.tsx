@@ -100,8 +100,10 @@ const providerToLogoProvider: Record<SupportedProvider, string> = {
   cohere: "cohere",
   mistral: "mistral",
   vllm: "vllm",
+  openrouter: "openrouter",
   ollama: "ollama-cloud", // models.dev uses ollama-cloud for the Ollama provider
   zhipuai: "zhipuai",
+  deepseek: "deepseek",
 };
 
 /**

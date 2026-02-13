@@ -234,6 +234,15 @@ export const ChatErrorMessages: Record<ChatErrorCode, string> = {
 };
 
 /**
+ * DeepSeek API error types
+ * DeepSeek uses OpenAI-compatible error format.
+ * @see https://api-docs.deepseek.com/
+ */
+export const DeepseekErrorTypes = {
+  ...OpenAIErrorTypes,
+};
+
+/**
  * Error codes that indicate the operation can be retried
  */
 export const RetryableErrorCodes: Set<ChatErrorCode> = new Set([

@@ -291,7 +291,7 @@ async function fetchVllmModels(apiKey: string): Promise<ModelInfo[]> {
   const response = await fetch(url, {
     headers: {
       // vLLM typically doesn't require API keys, but pass it if provided
-      Authorization: apiKey ? `Bearer ${apiKey}` : "Bearer EMPTY",
+      Authorization: `Bearer ${apiKey}`,
     },
   });
 
@@ -331,6 +331,53 @@ async function fetchVllmModels(apiKey: string): Promise<ModelInfo[]> {
  * Ollama exposes an OpenAI-compatible /models endpoint
  * See: https://github.com/ollama/ollama/blob/main/docs/openai.md
  */
+async function fetchDeepseekModels(apiKey: string): Promise<ModelInfo[]> {
+  const baseUrl = config.llm.deepseek.baseUrl;
+  const url = `${baseUrl}/models`;
+
+  const response = await fetch(url, {
+    headers: {
+      // DeepSeek requires API key for authentication
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    logger.error(
+      { status: response.status, error: errorText },
+      "Failed to fetch DeepSeek models",
+    );
+    throw new Error(`Failed to fetch DeepSeek models: ${response.status}`);
+  }
+
+  const data = (await response.json()) as {
+    data: Array<{
+      id: string;
+      object: string;
+      created?: number;
+      owned_by?: string;
+      root?: string;
+      parent?: string | null;
+    }>;
+  };
+
+  // DeepSeek returns all loaded models, no filtering needed
+  return data.data.map((model) => ({
+    id: model.id,
+    displayName: model.id,
+    provider: "deepseek" as const,
+    createdAt: model.created
+      ? new Date(model.created * 1000).toISOString()
+      : undefined,
+  }));
+}
+
+/**
+ * Fetch models from Ollama API
+ * Ollama exposes an OpenAI-compatible /models endpoint
+ * See: https://github.com/ollama/ollama/blob/main/docs/openai.md
+ */
 async function fetchOllamaModels(apiKey: string): Promise<ModelInfo[]> {
   const baseUrl = config.llm.ollama.baseUrl;
   const url = `${baseUrl}/models`;
@@ -338,7 +385,7 @@ async function fetchOllamaModels(apiKey: string): Promise<ModelInfo[]> {
   const response = await fetch(url, {
     headers: {
       // Ollama typically doesn't require API keys, but pass it if provided
-      Authorization: apiKey ? `Bearer ${apiKey}` : "Bearer EMPTY",
+      Authorization: `Bearer ${apiKey}`,
     },
   });
 
@@ -736,6 +783,7 @@ async function getProviderApiKey({
     openai: () => config.chat.openai.apiKey || null,
     vllm: () => config.chat.vllm.apiKey || "", // vLLM typically doesn't require API keys
     zhipuai: () => config.chat.zhipuai?.apiKey || null,
+    deepseek: () => config.chat.deepseek?.apiKey || null,
     bedrock: () => config.chat.bedrock.apiKey || null,
   };
 
@@ -753,6 +801,7 @@ const modelFetchers: Record<
   gemini: fetchGeminiModels,
   mistral: fetchMistralModels,
   openai: fetchOpenAiModels,
+  deepseek: fetchDeepseekModels,
   vllm: fetchVllmModels,
   ollama: fetchOllamaModels,
   cohere: fetchCohereModels,

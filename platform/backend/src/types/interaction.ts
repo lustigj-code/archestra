@@ -7,10 +7,12 @@ import {
   Bedrock,
   Cerebras,
   Cohere,
+  Deepseek,
   Gemini,
   Mistral,
   Ollama,
   OpenAi,
+  OpenRouter,
   Vllm,
   Zhipuai,
 } from "./llm-providers";
@@ -33,6 +35,7 @@ export const InteractionRequestSchema = z.union([
   Cerebras.API.ChatCompletionRequestSchema,
   Mistral.API.ChatCompletionRequestSchema,
   Vllm.API.ChatCompletionRequestSchema,
+  OpenRouter.API.ChatCompletionRequestSchema,
   Ollama.API.ChatCompletionRequestSchema,
   Cohere.API.ChatRequestSchema,
   Zhipuai.API.ChatCompletionRequestSchema,
@@ -46,6 +49,7 @@ export const InteractionResponseSchema = z.union([
   Cerebras.API.ChatCompletionResponseSchema,
   Mistral.API.ChatCompletionResponseSchema,
   Vllm.API.ChatCompletionResponseSchema,
+  OpenRouter.API.ChatCompletionResponseSchema,
   Ollama.API.ChatCompletionResponseSchema,
   Cohere.API.ChatResponseSchema,
   Zhipuai.API.ChatCompletionResponseSchema,
@@ -135,6 +139,22 @@ export const SelectInteractionSchema = z.discriminatedUnion("type", [
     processedRequest:
       Vllm.API.ChatCompletionRequestSchema.nullable().optional(),
     response: Vllm.API.ChatCompletionResponseSchema,
+  }),
+
+  BaseSelectInteractionSchema.extend({
+    type: z.enum(["openrouter:chatCompletions"]),
+    request: OpenRouter.API.ChatCompletionRequestSchema,
+    processedRequest:
+      OpenRouter.API.ChatCompletionRequestSchema.nullable().optional(),
+    response: OpenRouter.API.ChatCompletionResponseSchema,
+  }),
+
+  BaseSelectInteractionSchema.extend({
+    type: z.enum(["deepseek:chatCompletions"]),
+    request: Deepseek.API.ChatCompletionRequestSchema,
+    processedRequest:
+      Deepseek.API.ChatCompletionRequestSchema.optional(),
+    response: Deepseek.API.ChatCompletionResponseSchema.optional(),
   }),
   BaseSelectInteractionSchema.extend({
     type: z.enum(["ollama:chatCompletions"]),

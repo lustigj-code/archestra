@@ -5,6 +5,7 @@ import { z } from "zod";
  */
 export const SupportedProvidersSchema = z.enum([
   "openai",
+  "openrouter",
   "gemini",
   "anthropic",
   "bedrock",
@@ -14,10 +15,12 @@ export const SupportedProvidersSchema = z.enum([
   "vllm",
   "ollama",
   "zhipuai",
+  "deepseek",
 ]);
 
 export const SupportedProvidersDiscriminatorSchema = z.enum([
   "openai:chatCompletions",
+  "openrouter:chatCompletions",
   "gemini:generateContent",
   "anthropic:messages",
   "bedrock:converse",
@@ -27,6 +30,7 @@ export const SupportedProvidersDiscriminatorSchema = z.enum([
   "vllm:chatCompletions",
   "ollama:chatCompletions",
   "zhipuai:chatCompletions",
+  "deepseek:chatCompletions",
 ]);
 
 export const SupportedProviders = Object.values(SupportedProvidersSchema.enum);
@@ -44,8 +48,10 @@ export const providerDisplayNames: Record<SupportedProvider, string> = {
   cerebras: "Cerebras",
   mistral: "Mistral AI",
   vllm: "vLLM",
+  openrouter: "OpenRouter",
   ollama: "Ollama",
   zhipuai: "Zhipu AI",
+  deepseek: "DeepSeek",
 };
 
 /**
@@ -105,5 +111,9 @@ export const MODEL_MARKER_PATTERNS: Record<
   bedrock: {
     fastest: ["nova-lite", "nova-micro", "haiku"],
     best: ["nova-pro", "sonnet", "opus"],
+  },
+  deepseek: {
+    fastest: ["deepseek-chat"],
+    best: ["deepseek-reasoner"],
   },
 };

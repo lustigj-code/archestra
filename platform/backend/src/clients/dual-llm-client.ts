@@ -607,6 +607,121 @@ Return only the JSON object, no other text.`;
   }
 }
 
+class DeepseekDualLlmClient implements DualLlmClient {
+  private client: OpenAI;
+  private model: string;
+
+  constructor(apiKey: string | undefined, model: string) {
+    logger.debug({ model }, "[dualLlmClient] DeepSeek: initializing client");
+    // DeepSeek typically doesn't require API keys, use dummy if not provided
+    this.client = new OpenAI({
+      apiKey: apiKey || "EMPTY",
+      baseURL: config.llm.deepseek.baseUrl,
+    });
+    this.model = model;
+  }
+
+  async chat(messages: DualLlmMessage[], temperature = 0): Promise<string> {
+    logger.debug(
+      { model: this.model, messageCount: messages.length, temperature },
+      "[dualLlmClient] DeepSeek: starting chat completion",
+    );
+    const response = await this.client.chat.completions.create({
+      model: this.model,
+      messages,
+      temperature,
+    });
+
+    const content = response.choices[0].message.content?.trim() || "";
+    logger.debug(
+      { model: this.model, responseLength: content.length },
+      "[dualLlmClient] DeepSeek: chat completion complete",
+    );
+    return content;
+  }
+
+  async chatWithSchema<T>(
+    messages: DualLlmMessage[],
+    schema: {
+      name: string;
+      schema: {
+        type: string;
+        properties: Record<string, unknown>;
+        required: string[];
+        additionalProperties: boolean;
+      };
+    },
+    temperature = 0,
+  ): Promise<T> {
+    logger.debug(
+      {
+        model: this.model,
+        schemaName: schema.name,
+        messageCount: messages.length,
+        temperature,
+      },
+      "[dualLlmClient] DeepSeek: starting chat with schema",
+    );
+
+    // DeepSeek supports JSON schema via guided decoding
+    // Try OpenAI-compatible structured output first
+    try {
+      const response = await this.client.chat.completions.create({
+        model: this.model,
+        messages,
+        response_format: {
+          type: "json_schema",
+          json_schema: schema,
+        },
+        temperature,
+      });
+
+      const content = response.choices[0].message.content || "";
+      logger.debug(
+        { model: this.model, responseLength: content.length },
+        "[dualLlmClient] DeepSeek: chat with schema complete, parsing response",
+      );
+      return JSON.parse(content) as T;
+    } catch {
+      // Fallback to prompt-based approach if structured output not supported
+      logger.debug(
+        { model: this.model },
+        "[dualLlmClient] DeepSeek: structured output not supported, using prompt fallback",
+      );
+
+      const systemPrompt = `You must respond with valid JSON matching this schema:
+${JSON.stringify(schema.schema, null, 2)}
+
+Return only the JSON object, no other text.`;
+
+      const enhancedMessages: DualLlmMessage[] = messages.map((msg, idx) => {
+        if (idx === 0 && msg.role === "user") {
+          return {
+            ...msg,
+            content: `${systemPrompt}\n\n${msg.content}`,
+          };
+        }
+        return msg;
+      });
+
+      const response = await this.client.chat.completions.create({
+        model: this.model,
+        messages: enhancedMessages,
+        temperature,
+      });
+
+      const content = response.choices[0].message.content || "";
+      const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/) || [
+        null,
+        content,
+      ];
+      const jsonText = jsonMatch[1].trim();
+
+      return JSON.parse(jsonText) as T;
+    }
+  }
+}
+
 /**
  * Ollama implementation of DualLlmClient
  * Ollama exposes an OpenAI-compatible API, so we use the OpenAI SDK with Ollama's base URL
@@ -1215,6 +1330,10 @@ const dualLlmClientFactories: Record<SupportedProvider, DualLlmClientFactory> =
     vllm: (apiKey, model) => {
       if (!model) throw new Error("Model name required for vLLM dual LLM");
       return new VllmDualLlmClient(apiKey, model);
+    },
+    deepseek: (apiKey, model) => {
+      if (!model) throw new Error("Model name required for DeepSeek dual LLM");
+      return new DeepseekDualLlmClient(apiKey, model);
     },
     ollama: (apiKey, model) => {
       if (!model) throw new Error("Model name required for Ollama dual LLM");

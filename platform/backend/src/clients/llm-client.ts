@@ -88,6 +88,7 @@ const envApiKeyGetters: Record<
   openai: () => config.chat.openai.apiKey,
   vllm: () => config.chat.vllm.apiKey,
   zhipuai: () => config.chat.zhipuai.apiKey,
+  deepseek: () => config.chat.deepseek.apiKey,
 };
 
 /**
@@ -198,7 +199,8 @@ export const FAST_MODELS: Record<SupportedChatProvider, string> = {
   cohere: "command-light", // Cohere's fast model
   vllm: "default", // vLLM uses whatever model is deployed
   ollama: "llama3.2", // Common fast model for Ollama
-  zhipuai: "glm-4-flash", // Zhipu's fast model
+  zhipuai: "glm-4-flash",
+  deepseek: "deepseek-chat", // Zhipu's fast model
   bedrock: "amazon.nova-lite-v1:0", // Bedrock's fast model, available in all regions for on-demand inference
   mistral: "mistral-small-latest", // Mistral's fast model
 };

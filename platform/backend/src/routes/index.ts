@@ -6,8 +6,10 @@ import geminiProxyRoutesV2 from "./proxy/routesv2/gemini";
 import mistralProxyRoutesV2 from "./proxy/routesv2/mistral";
 import ollamaProxyRoutesV2 from "./proxy/routesv2/ollama";
 import openAiProxyRoutesV2 from "./proxy/routesv2/openai";
+import openrouterProxyRoutesV2 from "./proxy/routesv2/openrouter";
 import vllmProxyRoutesV2 from "./proxy/routesv2/vllm";
 import zhipuaiProxyRoutesV2 from "./proxy/routesv2/zhipuai";
+import deepseekProxyRoutesV2 from "./proxy/routesv2/deepseek";
 
 export { default as browserStreamRoutes } from "@/features/browser-stream/routes/browser-stream.routes";
 export { default as a2aRoutes } from "./a2a";
@@ -44,9 +46,11 @@ export const cohereProxyRoutes = cohereProxyRoutesV2;
 export const geminiProxyRoutes = geminiProxyRoutesV2;
 export const mistralProxyRoutes = mistralProxyRoutesV2;
 export const openAiProxyRoutes = openAiProxyRoutesV2;
+export const openrouterProxyRoutes = openrouterProxyRoutesV2;
 export const vllmProxyRoutes = vllmProxyRoutesV2;
 export const ollamaProxyRoutes = ollamaProxyRoutesV2;
 export const zhipuaiProxyRoutes = zhipuaiProxyRoutesV2;
+export const deepseekProxyRoutes = deepseekProxyRoutesV2;
 // Bedrock proxy routes - V2 only (unified handler, AWS Converse API)
 export const bedrockProxyRoutes = bedrockProxyRoutesV2;
 export { default as secretsRoutes } from "./secrets";

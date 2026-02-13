@@ -95,7 +95,7 @@ const ollamaConfig: ChatProviderTestConfig = {
 
 // vLLM - Uses OpenAI-compatible streaming format
 const vllmConfig: ChatProviderTestConfig = {
-  providerName: "vllm",
+  providerName: "deepseek", "vllm",
   providerDisplayName: "vLLM",
   modelId: "meta-llama/Llama-3.1-8B-Instruct",
   modelDisplayName: "Llama 3.1 8B Instruct",

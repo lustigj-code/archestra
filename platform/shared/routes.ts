@@ -176,6 +176,15 @@ export const RouteId = {
   VllmChatCompletionsWithDefaultAgent: "vllmChatCompletionsWithDefaultAgent",
   VllmChatCompletionsWithAgent: "vllmChatCompletionsWithAgent",
 
+  // Proxy Routes - OpenRouter
+  OpenRouterChatCompletionsWithDefaultAgent:
+    "openRouterChatCompletionsWithDefaultAgent",
+  OpenRouterChatCompletionsWithAgent: "openRouterChatCompletionsWithAgent",
+
+  // Proxy Routes - DeepSeek
+  DeepseekChatCompletionsWithDefaultAgent: "deepseekChatCompletionsWithDefaultAgent",
+  DeepseekChatCompletionsWithAgent: "deepseekChatCompletionsWithAgent",
+
   // Proxy Routes - Ollama
   OllamaChatCompletionsWithDefaultAgent:
     "ollamaChatCompletionsWithDefaultAgent",

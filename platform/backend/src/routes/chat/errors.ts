@@ -10,6 +10,7 @@ import {
   OpenAIErrorTypes,
   RetryableErrorCodes,
   type SupportedProvider,
+  DeepseekErrorTypes,
   VllmErrorTypes,
   ZhipuaiErrorTypes,
 } from "@shared";
@@ -977,6 +978,26 @@ function parseVllmError(responseBody: string): ParsedOpenAIError | null {
 }
 
 /**
+ * Parse DeepSeek API error response
+ * DeepSeek uses the same error format as OpenAI.
+ * @see https://api-docs.deepseek.com/
+ */
+function parseDeepseekError(responseBody: string): ParsedOpenAIError | null {
+  return parseOpenAIError(responseBody);
+}
+
+/**
+ * Map DeepSeek error to standard error code
+ * @see https://api-docs.deepseek.com/
+ */
+function mapDeepseekErrorToCode(
+  statusCode: number | undefined,
+  errorType: string | undefined,
+): string {
+  return mapOpenAIErrorToCode(statusCode, errorType);
+}
+
+/**
  * Map vLLM error to ChatErrorCode.
  * vLLM uses OpenAI-compatible error format with some additional codes.
  *
@@ -1033,6 +1054,16 @@ function mapVllmErrorWrapper(
   parsedError: ParsedProviderError | null,
 ): ChatErrorCode {
   return mapVllmErrorToCode(
+    statusCode,
+    parsedError as ParsedOpenAIError | null,
+  );
+}
+
+function mapDeepseekErrorWrapper(
+  statusCode: number | undefined,
+  parsedError: ParsedProviderError | null,
+): ChatErrorCode {
+  return mapDeepseekErrorToCode(
     statusCode,
     parsedError as ParsedOpenAIError | null,
   );
@@ -1127,6 +1158,7 @@ const providerParsers: Record<SupportedProvider, ErrorParser> = {
   vllm: parseVllmError,
   ollama: parseOllamaError,
   zhipuai: parseZhipuaiError,
+  deepseek: parseDeepseekError,
 };
 
 /**
@@ -1145,6 +1177,7 @@ const providerMappers: Record<SupportedProvider, ErrorMapper> = {
   vllm: mapVllmErrorWrapper,
   ollama: mapOllamaErrorWrapper,
   zhipuai: mapZhipuaiErrorWrapper,
+  deepseek: mapDeepseekErrorWrapper,
 };
 
 // =============================================================================

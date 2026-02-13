@@ -186,6 +186,30 @@ See the [Vertex AI authentication guide](https://cloud.google.com/vertex-ai/docs
 
 You can get an API key from the [Mistral AI Console](https://console.mistral.ai/api-keys).
 
+
+
+## DeepSeek
+
+### Supported DeepSeek APIs
+
+- **Chat Completions API** (`/chat/completions`) - ✅ Fully supported
+
+### DeepSeek Connection Details
+
+- **Base URL**: `http://localhost:9000/v1/deepseek/{profile-id}`
+- **Authentication**: Pass your DeepSeek API key in the `Authorization` header as `Bearer <your-api-key>`
+
+### How to Get an API Key
+
+1. Sign up at [DeepSeek Platform](https://platform.deepseek.com/)
+2. Navigate to API Keys section
+3. Create a new API key
+
+### Important Notes
+
+- DeepSeek provides an OpenAI-compatible API, making it easy to integrate with existing OpenAI-based applications.
+- Available models include `deepseek-chat` (general purpose) and `deepseek-reasoner` (enhanced reasoning).
+
 ## vLLM
 
 [vLLM](https://github.com/vllm-project/vllm) is a high-throughput and memory-efficient inference and serving engine for LLMs. It's ideal for self-hosted deployments where you want to run open-source models on your own infrastructure.
@@ -194,7 +218,31 @@ You can get an API key from the [Mistral AI Console](https://console.mistral.ai/
 
 - **Chat Completions API** (`/chat/completions`) - ✅ Fully supported (OpenAI-compatible)
 
-### vLLM Connection Details
+#
+
+## DeepSeek
+
+### Supported DeepSeek APIs
+
+- **Chat Completions API** (`/chat/completions`) - ✅ Fully supported
+
+### DeepSeek Connection Details
+
+- **Base URL**: `http://localhost:9000/v1/deepseek/{profile-id}`
+- **Authentication**: Pass your DeepSeek API key in the `Authorization` header as `Bearer <your-api-key>`
+
+### How to Get an API Key
+
+1. Sign up at [DeepSeek Platform](https://platform.deepseek.com/)
+2. Navigate to API Keys section
+3. Create a new API key
+
+### Important Notes
+
+- DeepSeek provides an OpenAI-compatible API, making it easy to integrate with existing OpenAI-based applications.
+- Available models include `deepseek-chat` (general purpose) and `deepseek-reasoner` (enhanced reasoning).
+
+## vLLM Connection Details
 
 - **Base URL**: `http://localhost:9000/v1/vllm/{profile-id}`
 - **Authentication**: Pass your vLLM API key (if configured) in the `Authorization` header as `Bearer <your-api-key>`. Many vLLM deployments don't require authentication.

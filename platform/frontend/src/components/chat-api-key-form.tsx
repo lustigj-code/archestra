@@ -116,6 +116,23 @@ const PROVIDER_CONFIG: Record<
     consoleUrl: "https://docs.vllm.ai/",
     consoleName: "vLLM Docs",
   },
+  openrouter: {
+    name: "OpenRouter",
+    // No dedicated icon in this repo yet; reuse OpenAI-compatible icon.
+    icon: "/icons/openai.png",
+    placeholder: "sk-or-...",
+    enabled: true,
+    consoleUrl: "https://openrouter.ai/keys",
+    consoleName: "OpenRouter",
+  },
+  deepseek: {
+    name: "DeepSeek",
+    icon: "/icons/deepseek.png",
+    placeholder: "sk-...",
+    enabled: true,
+    consoleUrl: "https://platform.deepseek.com/api_keys",
+    consoleName: "DeepSeek Platform",
+  },
   ollama: {
     name: "Ollama",
     icon: "/icons/ollama.png",
