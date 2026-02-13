@@ -331,6 +331,53 @@ async function fetchVllmModels(apiKey: string): Promise<ModelInfo[]> {
  * Ollama exposes an OpenAI-compatible /models endpoint
  * See: https://github.com/ollama/ollama/blob/main/docs/openai.md
  */
+async function fetchOpenrouterModels(apiKey: string): Promise<ModelInfo[]> {
+  const baseUrl = config.llm.openrouter.baseUrl;
+  const url = `${baseUrl}/models`;
+
+  const response = await fetch(url, {
+    headers: {
+      // OpenRouter requires API key for authentication
+      Authorization: apiKey ? `Bearer ${apiKey}` : "Bearer EMPTY",
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    logger.error(
+      { status: response.status, error: errorText },
+      "Failed to fetch OpenRouter models",
+    );
+    throw new Error(`Failed to fetch OpenRouter models: ${response.status}`);
+  }
+
+  const data = (await response.json()) as {
+    data: Array<{
+      id: string;
+      object: string;
+      created?: number;
+      owned_by?: string;
+      root?: string;
+      parent?: string | null;
+    }>;
+  };
+
+  // OpenRouter returns all loaded models, no filtering needed
+  return data.data.map((model) => ({
+    id: model.id,
+    displayName: model.id,
+    provider: "openrouter" as const,
+    createdAt: model.created
+      ? new Date(model.created * 1000).toISOString()
+      : undefined,
+  }));
+}
+
+/**
+ * Fetch models from Ollama API
+ * Ollama exposes an OpenAI-compatible /models endpoint
+ * See: https://github.com/ollama/ollama/blob/main/docs/openai.md
+ */
 async function fetchOllamaModels(apiKey: string): Promise<ModelInfo[]> {
   const baseUrl = config.llm.ollama.baseUrl;
   const url = `${baseUrl}/models`;
@@ -736,6 +783,7 @@ async function getProviderApiKey({
     openai: () => config.chat.openai.apiKey || null,
     vllm: () => config.chat.vllm.apiKey || "", // vLLM typically doesn't require API keys
     zhipuai: () => config.chat.zhipuai?.apiKey || null,
+    openrouter: () => config.chat.openrouter?.apiKey || null,
     bedrock: () => config.chat.bedrock.apiKey || null,
   };
 
@@ -753,6 +801,7 @@ const modelFetchers: Record<
   gemini: fetchGeminiModels,
   mistral: fetchMistralModels,
   openai: fetchOpenAiModels,
+  openrouter: fetchOpenrouterModels,
   vllm: fetchVllmModels,
   ollama: fetchOllamaModels,
   cohere: fetchCohereModels,

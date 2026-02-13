@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/openrouter/v1/models"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "object": "list",
+      "data": [
+        {
+          "id": "openai/gpt-4o-mini",
+          "object": "model",
+          "created": 1686935002,
+          "owned_by": "vllm"
+        }
+      ]
+    }
+  }
+}

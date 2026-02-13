@@ -15,6 +15,7 @@ import type {
   Mistral,
   OpenAi,
   Vllm,
+  Openrouter,
   Zhipuai,
 } from "@/types";
 
@@ -28,6 +29,7 @@ type ProviderMessages = {
   vllm: Vllm.Types.ChatCompletionsRequest["messages"];
   ollama: Vllm.Types.ChatCompletionsRequest["messages"];
   zhipuai: Zhipuai.Types.ChatCompletionsRequest["messages"];
+  openrouter: Openrouter.Types.ChatCompletionsRequest["messages"];
 };
 
 /**

@@ -86,8 +86,10 @@ const envApiKeyGetters: Record<
   mistral: () => config.chat.mistral.apiKey,
   ollama: () => config.chat.ollama.apiKey,
   openai: () => config.chat.openai.apiKey,
+  openrouter: () => config.chat.openrouter.apiKey,
   vllm: () => config.chat.vllm.apiKey,
   zhipuai: () => config.chat.zhipuai.apiKey,
+  openrouter: () => config.chat.openrouter.apiKey,
 };
 
 /**
@@ -198,7 +200,8 @@ export const FAST_MODELS: Record<SupportedChatProvider, string> = {
   cohere: "command-light", // Cohere's fast model
   vllm: "default", // vLLM uses whatever model is deployed
   ollama: "llama3.2", // Common fast model for Ollama
-  zhipuai: "glm-4-flash", // Zhipu's fast model
+  zhipuai: "glm-4-flash",
+  openrouter: "openai/gpt-4o-mini", // Zhipu's fast model
   bedrock: "amazon.nova-lite-v1:0", // Bedrock's fast model, available in all regions for on-demand inference
   mistral: "mistral-small-latest", // Mistral's fast model
 };
@@ -242,6 +245,31 @@ const directModelCreators: Record<SupportedChatProvider, DirectModelCreator> = {
       );
     }
     const client = createOpenAI({ apiKey });
+    return client(modelName);
+  },
+
+  openrouter: ({ apiKey, modelName }) => {
+    if (!apiKey) {
+      throw new ApiError(
+        400,
+        "OpenRouter API key is required. Please configure ARCHESTRA_CHAT_OPENROUTER_API_KEY or add a chat API key.",
+      );
+    }
+
+    // OpenRouter is OpenAI-compatible.
+    // Attach attribution headers if configured.
+    const httpReferer = config.llm.openrouter.httpReferer;
+    const xTitle = config.llm.openrouter.xTitle;
+
+    const client = createOpenAI({
+      apiKey,
+      baseURL: config.llm.openrouter.baseUrl,
+      headers: {
+        ...(httpReferer ? { "HTTP-Referer": httpReferer } : {}),
+        ...(xTitle ? { "X-Title": xTitle } : {}),
+      },
+    });
+
     return client(modelName);
   },
 
@@ -451,6 +479,17 @@ const proxiedModelCreators: Record<SupportedChatProvider, ProxiedModelCreator> =
       });
       // Use .chat() to force Chat Completions API (not Responses API)
       // so our proxy's tool policy evaluation is applied
+      return client.chat(modelName);
+    },
+
+    openrouter: ({ apiKey, agentId, modelName, headers }) => {
+      // URL format: /v1/openrouter/:agentId (SDK appends /chat/completions)
+      const client = createOpenAI({
+        apiKey,
+        baseURL: buildProxyBaseUrl("openrouter", agentId),
+        headers,
+      });
+      // OpenRouter is OpenAI-compatible; use Chat Completions API.
       return client.chat(modelName);
     },
 

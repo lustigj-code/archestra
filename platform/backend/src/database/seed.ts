@@ -438,6 +438,7 @@ async function seedChatApiKeysFromEnv(): Promise<void> {
     mistral: config.chat.mistral.apiKey,
     ollama: config.chat.ollama.apiKey,
     vllm: config.chat.vllm.apiKey,
+    openrouter: config.chat.openrouter.apiKey,
     zhipuai: config.chat.zhipuai.apiKey,
     bedrock: config.chat.bedrock.apiKey,
   };
@@ -526,6 +527,7 @@ function getProviderDisplayName(provider: SupportedProvider): string {
     mistral: "Mistral",
     ollama: "Ollama",
     vllm: "vLLM",
+    openrouter: "OpenRouter",
     zhipuai: "ZhipuAI",
     bedrock: "AWS Bedrock",
   };

@@ -116,6 +116,14 @@ const PROVIDER_CONFIG: Record<
     consoleUrl: "https://docs.vllm.ai/",
     consoleName: "vLLM Docs",
   },
+  openrouter: {
+    name: "OpenRouter",
+    icon: "/icons/openrouter.png",
+    placeholder: "sk-or-v1-...",
+    enabled: true,
+    consoleUrl: "https://openrouter.ai/keys",
+    consoleName: "OpenRouter Dashboard",
+  },
   ollama: {
     name: "Ollama",
     icon: "/icons/ollama.png",

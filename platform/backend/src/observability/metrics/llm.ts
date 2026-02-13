@@ -40,6 +40,7 @@ const fetchUsageExtractors: Record<SupportedProvider, UsageExtractor> = {
   cohere: getCohereUsage,
   zhipuai: getZhipuaiUsage,
   gemini: null,
+  openrouter: getOpenAIUsage,
   bedrock: null,
 };
 

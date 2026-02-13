@@ -274,8 +274,10 @@ class OptimizationRuleModel {
       cerebras: [],
       mistral: [],
       vllm: [], // vLLM model pricing varies by deployment, so no defaults
+      openrouter: [], // OpenRouter pricing varies by model/provider, so no defaults
       ollama: [], // Ollama model pricing varies by deployment, so no defaults
       zhipuai: [],
+      openrouter: [],
       bedrock: [], // Bedrock model pricing varies by region and usage, so no defaults
     };
 
@@ -308,6 +310,7 @@ class OptimizationRuleModel {
         cerebras: [],
         mistral: [],
         vllm: [], // vLLM optimization rules are deployment-specific, no defaults
+        openrouter: [], // OpenRouter optimization rules are model-specific, no defaults
         ollama: [], // Ollama optimization rules are deployment-specific, no defaults
         zhipuai: [],
         bedrock: [], // Bedrock optimization rules are deployment-specific, no defaults

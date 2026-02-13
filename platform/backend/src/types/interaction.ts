@@ -11,6 +11,7 @@ import {
   Mistral,
   Ollama,
   OpenAi,
+  Openrouter,
   Vllm,
   Zhipuai,
 } from "./llm-providers";
@@ -135,6 +136,14 @@ export const SelectInteractionSchema = z.discriminatedUnion("type", [
     processedRequest:
       Vllm.API.ChatCompletionRequestSchema.nullable().optional(),
     response: Vllm.API.ChatCompletionResponseSchema,
+  }),
+
+  BaseSelectInteractionSchema.extend({
+    type: z.enum(["openrouter:chatCompletions"]),
+    request: Openrouter.API.ChatCompletionRequestSchema,
+    processedRequest:
+      Openrouter.API.ChatCompletionRequestSchema.optional(),
+    response: Openrouter.API.ChatCompletionResponseSchema.optional(),
   }),
   BaseSelectInteractionSchema.extend({
     type: z.enum(["ollama:chatCompletions"]),

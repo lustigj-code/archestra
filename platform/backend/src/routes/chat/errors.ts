@@ -977,6 +977,22 @@ function parseVllmError(responseBody: string): ParsedOpenAIError | null {
 }
 
 /**
+ * Parse OpenRouter API error response
+ * OpenRouter uses OpenAI-compatible error format.
+ * @see https://openrouter.ai/docs/errors
+ */
+function parseOpenrouterError(responseBody: string): ParsedOpenAIError | null {
+  return parseOpenAIError(responseBody);
+}
+
+function mapOpenrouterErrorToCode(
+  statusCode: number | undefined,
+  errorType: string | undefined,
+): string {
+  return mapOpenAIErrorToCode(statusCode, errorType);
+}
+
+/**
  * Map vLLM error to ChatErrorCode.
  * vLLM uses OpenAI-compatible error format with some additional codes.
  *
@@ -1033,6 +1049,16 @@ function mapVllmErrorWrapper(
   parsedError: ParsedProviderError | null,
 ): ChatErrorCode {
   return mapVllmErrorToCode(
+    statusCode,
+    parsedError as ParsedOpenAIError | null,
+  );
+}
+
+function mapOpenrouterErrorWrapper(
+  statusCode: number | undefined,
+  parsedError: ParsedProviderError | null,
+): ChatErrorCode {
+  return mapOpenrouterErrorToCode(
     statusCode,
     parsedError as ParsedOpenAIError | null,
   );
@@ -1127,6 +1153,7 @@ const providerParsers: Record<SupportedProvider, ErrorParser> = {
   vllm: parseVllmError,
   ollama: parseOllamaError,
   zhipuai: parseZhipuaiError,
+  openrouter: parseOpenrouterError,
 };
 
 /**
@@ -1145,6 +1172,7 @@ const providerMappers: Record<SupportedProvider, ErrorMapper> = {
   vllm: mapVllmErrorWrapper,
   ollama: mapOllamaErrorWrapper,
   zhipuai: mapZhipuaiErrorWrapper,
+  openrouter: mapOpenrouterErrorWrapper,
 };
 
 // =============================================================================

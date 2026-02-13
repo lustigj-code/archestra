@@ -186,6 +186,31 @@ See the [Vertex AI authentication guide](https://cloud.google.com/vertex-ai/docs
 
 You can get an API key from the [Mistral AI Console](https://console.mistral.ai/api-keys).
 
+
+
+## OpenRouter
+
+### Supported OpenRouter APIs
+
+- **Chat Completions API** (`/chat/completions`) - ✅ Fully supported
+
+### OpenRouter Connection Details
+
+- **Base URL**: `http://localhost:9000/v1/openrouter/{profile-id}`
+- **Authentication**: Pass your OpenRouter API key in the `Authorization` header as `Bearer <your-api-key>`
+
+### How to Get an API Key
+
+1. Sign up at [OpenRouter](https://openrouter.ai/)
+2. Navigate to [API Keys](https://openrouter.ai/keys)
+3. Create a new API key
+
+### Important Notes
+
+- OpenRouter provides a unified API for accessing models from multiple providers (OpenAI, Anthropic, Google, Meta, etc.).
+- Use provider-prefixed model names (e.g., `openai/gpt-4o`, `anthropic/claude-3.5-sonnet`).
+- OpenRouter uses an OpenAI-compatible API format, making it easy to integrate.
+
 ## vLLM
 
 [vLLM](https://github.com/vllm-project/vllm) is a high-throughput and memory-efficient inference and serving engine for LLMs. It's ideal for self-hosted deployments where you want to run open-source models on your own infrastructure.
@@ -194,7 +219,32 @@ You can get an API key from the [Mistral AI Console](https://console.mistral.ai/
 
 - **Chat Completions API** (`/chat/completions`) - ✅ Fully supported (OpenAI-compatible)
 
-### vLLM Connection Details
+#
+
+## OpenRouter
+
+### Supported OpenRouter APIs
+
+- **Chat Completions API** (`/chat/completions`) - ✅ Fully supported
+
+### OpenRouter Connection Details
+
+- **Base URL**: `http://localhost:9000/v1/openrouter/{profile-id}`
+- **Authentication**: Pass your OpenRouter API key in the `Authorization` header as `Bearer <your-api-key>`
+
+### How to Get an API Key
+
+1. Sign up at [OpenRouter](https://openrouter.ai/)
+2. Navigate to [API Keys](https://openrouter.ai/keys)
+3. Create a new API key
+
+### Important Notes
+
+- OpenRouter provides a unified API for accessing models from multiple providers (OpenAI, Anthropic, Google, Meta, etc.).
+- Use provider-prefixed model names (e.g., `openai/gpt-4o`, `anthropic/claude-3.5-sonnet`).
+- OpenRouter uses an OpenAI-compatible API format, making it easy to integrate.
+
+## vLLM Connection Details
 
 - **Base URL**: `http://localhost:9000/v1/vllm/{profile-id}`
 - **Authentication**: Pass your vLLM API key (if configured) in the `Authorization` header as `Bearer <your-api-key>`. Many vLLM deployments don't require authentication.
