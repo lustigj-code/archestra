@@ -186,6 +186,29 @@ See the [Vertex AI authentication guide](https://cloud.google.com/vertex-ai/docs
 
 You can get an API key from the [Mistral AI Console](https://console.mistral.ai/api-keys).
 
+
+
+## x.ai (Grok)
+
+### Supported x.ai APIs
+
+- **Chat Completions API** (`/chat/completions`) - ✅ Fully supported
+
+### x.ai Connection Details
+
+- **Base URL**: `http://localhost:9000/v1/xai/{profile-id}`
+- **Authentication**: Pass your x.ai API key in the `Authorization` header as `Bearer <your-api-key>`
+
+### How to Get an API Key
+
+1. Sign up at [x.ai Console](https://console.x.ai/)
+2. Create a new API key (starts with `xai-`)
+
+### Important Notes
+
+- x.ai provides Grok models via an OpenAI-compatible API.
+- Available models include `grok-2` and `grok-2-mini`.
+
 ## vLLM
 
 [vLLM](https://github.com/vllm-project/vllm) is a high-throughput and memory-efficient inference and serving engine for LLMs. It's ideal for self-hosted deployments where you want to run open-source models on your own infrastructure.
@@ -194,7 +217,30 @@ You can get an API key from the [Mistral AI Console](https://console.mistral.ai/
 
 - **Chat Completions API** (`/chat/completions`) - ✅ Fully supported (OpenAI-compatible)
 
-### vLLM Connection Details
+#
+
+## x.ai (Grok)
+
+### Supported x.ai APIs
+
+- **Chat Completions API** (`/chat/completions`) - ✅ Fully supported
+
+### x.ai Connection Details
+
+- **Base URL**: `http://localhost:9000/v1/xai/{profile-id}`
+- **Authentication**: Pass your x.ai API key in the `Authorization` header as `Bearer <your-api-key>`
+
+### How to Get an API Key
+
+1. Sign up at [x.ai Console](https://console.x.ai/)
+2. Create a new API key (starts with `xai-`)
+
+### Important Notes
+
+- x.ai provides Grok models via an OpenAI-compatible API.
+- Available models include `grok-2` and `grok-2-mini`.
+
+## vLLM Connection Details
 
 - **Base URL**: `http://localhost:9000/v1/vllm/{profile-id}`
 - **Authentication**: Pass your vLLM API key (if configured) in the `Authorization` header as `Bearer <your-api-key>`. Many vLLM deployments don't require authentication.

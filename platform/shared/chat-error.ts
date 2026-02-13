@@ -233,6 +233,10 @@ export const ChatErrorMessages: Record<ChatErrorCode, string> = {
   [ChatErrorCode.Unknown]: "An unexpected error occurred. Please try again.",
 };
 
+export const XaiErrorTypes = {
+  ...OpenAIErrorTypes,
+};
+
 /**
  * Error codes that indicate the operation can be retried
  */

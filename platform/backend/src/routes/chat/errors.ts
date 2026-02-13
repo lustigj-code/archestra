@@ -976,6 +976,14 @@ function parseVllmError(responseBody: string): ParsedOpenAIError | null {
   return parseOpenAIError(responseBody);
 }
 
+function parseXaiError(responseBody: string): ParsedOpenAIError | null {
+  return parseOpenAIError(responseBody);
+}
+
+function mapXaiErrorToCode(statusCode: number | undefined, errorType: string | undefined): string {
+  return mapOpenAIErrorToCode(statusCode, errorType);
+}
+
 /**
  * Map vLLM error to ChatErrorCode.
  * vLLM uses OpenAI-compatible error format with some additional codes.
@@ -1033,6 +1041,16 @@ function mapVllmErrorWrapper(
   parsedError: ParsedProviderError | null,
 ): ChatErrorCode {
   return mapVllmErrorToCode(
+    statusCode,
+    parsedError as ParsedOpenAIError | null,
+  );
+}
+
+function mapXaiErrorWrapper(
+  statusCode: number | undefined,
+  parsedError: ParsedProviderError | null,
+): ChatErrorCode {
+  return mapXaiErrorToCode(
     statusCode,
     parsedError as ParsedOpenAIError | null,
   );
@@ -1127,6 +1145,7 @@ const providerParsers: Record<SupportedProvider, ErrorParser> = {
   vllm: parseVllmError,
   ollama: parseOllamaError,
   zhipuai: parseZhipuaiError,
+  xai: parseXaiError,
 };
 
 /**
@@ -1145,6 +1164,7 @@ const providerMappers: Record<SupportedProvider, ErrorMapper> = {
   vllm: mapVllmErrorWrapper,
   ollama: mapOllamaErrorWrapper,
   zhipuai: mapZhipuaiErrorWrapper,
+  xai: mapXaiErrorWrapper,
 };
 
 // =============================================================================

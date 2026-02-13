@@ -52,6 +52,10 @@ const PROVIDER_CONFIG: Record<
     label: providerDisplayNames.vllm,
     originalUrl: "http://localhost:8000/v1/",
   },
+  xai: {
+    label: providerDisplayNames.xai,
+    originalUrl: "https://api.x.ai/v1/",
+  },
   ollama: {
     label: providerDisplayNames.ollama,
     originalUrl: "http://localhost:11434/v1/",

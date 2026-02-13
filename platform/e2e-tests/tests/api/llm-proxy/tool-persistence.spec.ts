@@ -178,6 +178,31 @@ const mistralConfig: ToolPersistenceTestConfig = {
   }),
 };
 
+const xaiConfig: ToolPersistenceTestConfig = {
+  providerName: "x.ai",
+
+  endpoint: (agentId) => `/v1/xai/${agentId}/chat/completions`,
+
+  headers: (wiremockStub) => ({
+    Authorization: `Bearer ${wiremockStub}`,
+    "Content-Type": "application/json",
+  }),
+
+  buildRequest: (content, tools) => ({
+    model: "grok-2",
+    messages: [{ role: "user", content }],
+    tools: tools.map((t) => ({
+      type: "function",
+      function: {
+        name: t.name,
+        description: t.description,
+        parameters: t.parameters,
+      },
+    })),
+  }),
+};
+
+
 const vllmConfig: ToolPersistenceTestConfig = {
   providerName: "vLLM",
 
@@ -285,6 +310,7 @@ const testConfigs: ToolPersistenceTestConfig[] = [
   cohereConfig,
   cerebrasConfig,
   mistralConfig,
+  xaiConfig,
   vllmConfig,
   ollamaConfig,
   zhipuaiConfig,

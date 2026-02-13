@@ -14,6 +14,7 @@ import MistralChatCompletionInteraction from "./llmProviders/mistral";
 import OllamaChatCompletionInteraction from "./llmProviders/ollama";
 import OpenAiChatCompletionInteraction from "./llmProviders/openai";
 import VllmChatCompletionInteraction from "./llmProviders/vllm";
+import XaiChatCompletionInteraction from "./llmProviders/xai";
 import ZhipuaiChatCompletionInteraction from "./llmProviders/zhipuai";
 
 export interface CostSavingsInput {
@@ -134,6 +135,8 @@ export class DynamicInteraction implements InteractionUtils {
       return new CerebrasChatCompletionInteraction(interaction);
     } else if (type === "mistral:chatCompletions") {
       return new MistralChatCompletionInteraction(interaction);
+    } else if (type === "xai:chatCompletions") {
+      return new XaiChatCompletionInteraction(interaction);
     } else if (type === "vllm:chatCompletions") {
       return new VllmChatCompletionInteraction(interaction);
     } else if (type === "ollama:chatCompletions") {

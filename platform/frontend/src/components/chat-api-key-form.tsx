@@ -116,6 +116,14 @@ const PROVIDER_CONFIG: Record<
     consoleUrl: "https://docs.vllm.ai/",
     consoleName: "vLLM Docs",
   },
+  xai: {
+    name: "x.ai (Grok)",
+    icon: "/icons/xai.png",
+    placeholder: "xai-...",
+    enabled: true,
+    consoleUrl: "https://console.x.ai/",
+    consoleName: "x.ai Console",
+  },
   ollama: {
     name: "Ollama",
     icon: "/icons/ollama.png",

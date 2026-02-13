@@ -12,6 +12,7 @@ import {
   Ollama,
   OpenAi,
   Vllm,
+  Xai,
   Zhipuai,
 } from "./llm-providers";
 import { ToonSkipReasonSchema } from "./tool-result-compression";
@@ -135,6 +136,12 @@ export const SelectInteractionSchema = z.discriminatedUnion("type", [
     processedRequest:
       Vllm.API.ChatCompletionRequestSchema.nullable().optional(),
     response: Vllm.API.ChatCompletionResponseSchema,
+  }),
+  BaseSelectInteractionSchema.extend({
+    type: z.enum(["xai:chatCompletions"]),
+    request: Xai.API.ChatCompletionRequestSchema,
+    processedRequest: Xai.API.ChatCompletionRequestSchema.optional(),
+    response: Xai.API.ChatCompletionResponseSchema.optional(),
   }),
   BaseSelectInteractionSchema.extend({
     type: z.enum(["ollama:chatCompletions"]),

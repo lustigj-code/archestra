@@ -411,6 +411,7 @@ class ModelsDevClient {
       ollama: ["ollama/"],
       vllm: ["vllm/"],
       zhipuai: ["zhipuai/"],
+      xai: ["xai/"],
     };
 
     const getSourcePriority = (model: CreateModel): number => {
